@@ -7,9 +7,15 @@ class BooksController < ApplicationController
     @book_comment = BookComment.new
   end
 
-  def index
+def index
+    current_time  = Time.current.at_end_of_day
+    past_time  = (current_time - 6.day).at_beginning_of_day
+    @books = Book.includes(:favorited_users).
+      sort {|a,b| 
+        b.favorited_users.includes(:favorites).where(created_at: past_time...current_time).size <=> 
+        a.favorited_users.includes(:favorites).where(created_at: past_time...current_time).size
+      }
     @book = Book.new
-    @books = Book.all
   end
 
   def create
