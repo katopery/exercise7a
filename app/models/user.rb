@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :entries, dependent: :destroy
   has_many :messages, dependent: :destroy
   
+  has_many :read_counts, dependent: :destroy
+  
   has_one_attached :profile_image
   
   #フォローしている関連付け
